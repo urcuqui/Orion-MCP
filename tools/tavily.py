@@ -14,7 +14,7 @@ class TavilySearchTool:
         self._mcp = mcp
 
     def register(self) -> None:
-        @self._mcp.tool()
+        @self._mcp.tool(description="Search the internet with Tavily.")
         async def search_internet(
             query: str,
             max_results: int = 5,
@@ -22,7 +22,13 @@ class TavilySearchTool:
             include_answer: bool = False,
             include_raw_content: bool = False,
         ) -> Dict[str, Any]:
-            """Search the internet using Tavily and return structured results."""
+            """Search the internet with Tavily and return structured results.
+
+            Use this tool to run a web query and retrieve ranked sources with
+            titles, URLs, and snippets. You can control the result count, choose
+            a search depth (e.g., basic vs. advanced), and optionally include a
+            synthesized answer or raw page content when supported.
+            """
             api_key = require_env("TAVILY_API_KEY")
 
             logger.info("Executing Tavily search for query: %s", query)
@@ -42,6 +48,7 @@ class TavilySearchTool:
                         json=payload,
                     )
                     response.raise_for_status()
+                    logger.info("Tavily search succeeded for query: %s", query)
                     return response.json()
                 except httpx.HTTPError as exc:
                     logger.error("Tavily request failed: %s", exc)

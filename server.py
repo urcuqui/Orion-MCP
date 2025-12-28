@@ -4,7 +4,7 @@ from fastmcp import FastMCP
 
 from tools import FirecrawlWebScrapeTool, TavilySearchTool
 
-mcp = FastMCP("orion-mcp")
+mcp = FastMCP("orion-mcp",streamable_http_path="/",port=8000)
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(name)s:%(message)s")
 logger = logging.getLogger("orion-mcp")
